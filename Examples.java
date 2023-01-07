@@ -1,6 +1,6 @@
 import java.util.*;
 //import math.*;
-public class Demo1 {
+public class Examples {
 
     public static void main(String[] args)
     {
