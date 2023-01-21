@@ -22,7 +22,8 @@ Structure:
 	  |
 	Govt - abstract class
 	  |
-   Country; has State; has City; has Person - Class
+   Country; has State; has City; - Class  
+   						has Person - Class   									
 
    Area - abstract class
 	  |
