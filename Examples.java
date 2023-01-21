@@ -217,7 +217,9 @@ class Person {
     }
 
     void print() {
+        System.out.println("-------------XXX----------");
         System.out.println(String.format("This is a Person\nName: %s\nCity: %s\nIncome: %d\nIdentity No: %s",this.name,this.city.name,this.income,this.identity_no));
+        System.out.println("-------------XXX----------");
     }
 }
 
