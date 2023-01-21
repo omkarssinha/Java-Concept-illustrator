@@ -30,6 +30,10 @@ public class Examples {
 //        mumbai.print();
 //        System.out.println("-------------XXX----------");
         
+        Country SriLanka =  new Country("Sri Lanka","Colombo","Sinhalese");
+        State NorthernProvince = new State("Northern Province","Jaffna","Tamil",SriLanka);
+        City Jaffna = new City("Jaffna", "JFN",NorthernProvince);
+        
         Person kunal = new Person("Kunal", mumbai, 200000);
         Person sachin = new Person("Sachin", thane, 200000);
         Person ajit = new Person("Ajit", navi_mumbai, 200000);
@@ -46,12 +50,27 @@ public class Examples {
         City ranchi = dhoni.city;
         State jharkhand = dhoni.city.state;
         
-        
-        kunal.print();
-        sachin.print();
-        karthik.print();
+        SriLanka.print();
+        NorthernProvince.print();
+        Jaffna.print();
+        india.print();
+        jharkhand.print();
+        ranchi.print();
+        dhoni.print();
+        dhoni.migrate(Jaffna);
+//        kunal.print();
+//        sachin.print();
+//        karthik.print();
         vijay.print();
         dhoni.print();
+        SriLanka.print();
+        NorthernProvince.print();
+        Jaffna.print();
+        india.print();
+        jharkhand.print();
+        ranchi.print();
+        
+        
 
 //        india.print();
 //        maharashtra.print();
@@ -75,9 +94,9 @@ public class Examples {
 abstract class Area {
 
     int population;
-    void addPopulation(Person person)
-    {}
-
+    void birth(Person person){};
+    void deceased(Person person){};
+    void migrate(Person person, City destinationCity) {};
 }
 
 abstract class Govt extends Area {
@@ -98,18 +117,21 @@ class Country extends Govt {
         this.capital = capital;
         this.language = language;
     }
-    void addPopulation(Person person)
+    void birth(Person person)
     {
     	this.population++;
-    	person.identity_no = generateUUID();
     }
-    private String generateUUID()
+    void deceased(Person person)
+    {
+    	this.population--;
+    }
+    public String generateUUID()
     {
     	String new_uuid;
     	
     	do {
-    	String random = Double.toString(Math.random());
-    	new_uuid = random.substring(3,13);
+	    	String random = Double.toString(Math.random());
+	    	new_uuid = random.substring(3,13);
     	} while(assigned_uuids.contains(new_uuid));
     
     	while(new_uuid.length()<10)
@@ -117,6 +139,12 @@ class Country extends Govt {
     	
     	assigned_uuids.add(new_uuid);
     	return new_uuid;
+    }
+    void migrate(Person person, City destinationCity) {
+    	
+    	this.population--;
+    	destinationCity.state.country.population++;
+    	person.getIdentityNo(this);
     }
     
 
@@ -149,11 +177,23 @@ class State extends Govt {
         this.country.states.add(this);
     }
     
-    void addPopulation(Person person)
+    void birth(Person person)
     {
     	this.population++;
-    	this.country.addPopulation(person);
+    	this.country.birth(person);
     	
+    }
+    void deceased(Person person)
+    {
+    	this.population--;
+    	this.country.deceased(person);
+    	
+    }
+    void migrate(Person person, City destinationCity) {
+    	this.population--;
+    	destinationCity.state.population++;
+    	if(this.country != destinationCity.state.country)
+    		this.country.migrate(person, destinationCity);
     }
 
     void print() {
@@ -182,12 +222,27 @@ class City extends Govt {
         this.state.cities.add(this);    
     }
     
-    void addPopulation(Person person)
+    void birth(Person person)
     {
     	people.add(person);
     	this.population++;
-    	this.state.addPopulation(person);
+    	this.state.birth(person);
+    }
+    void deceased(Person person)
+    {
+    	people.remove(person);
+    	this.population--;
+    	this.state.deceased(person);
+    }
+    void migrate(Person person, City destinationCity) {
     	
+    	this.population--;
+    	destinationCity.population++;
+    	this.people.remove(person);
+    	destinationCity.people.add(person);
+    	
+    	if(this.state != destinationCity.state)
+    		this.state.migrate(person, destinationCity);
     }
 
     void print() {
@@ -205,15 +260,28 @@ class Person {
     String name;
     City city;
     int income;
-    String identity_no;
+    private String identity_no;
 
     public Person(String name, City city, int income) {
         this.name = name;
         this.city = city;
         this.income = income;
-        
-        this.city.addPopulation(this);
-        
+        this.city.birth(this);
+        getIdentityNo(this.city.state.country);
+    }
+    
+    void migrate(City destinationCity) {
+    	
+    	if(this.city == destinationCity)
+    		return;
+    	
+    	else {    		    		
+    		this.city.migrate(this, destinationCity); 
+    		this.city = destinationCity;
+    	}	
+    }
+    void getIdentityNo(Country country) {
+    	this.identity_no = country.generateUUID();
     }
 
     void print() {
