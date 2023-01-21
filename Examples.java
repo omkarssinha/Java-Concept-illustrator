@@ -14,7 +14,7 @@ public class Examples {
 
         State maharashtra = new State("Maharashtra","Mumbai","Marathi",india);
         State karnataka = new State("Karnataka","Bangalore","Kannada",india);
-        State tamil_nadu = new State("Tamil Nadu","Chennai","Tamil",india);
+        State tamilNadu = new State("Tamil Nadu","Chennai","Tamil",india);
 //        maharashtra.print();
 //        System.out.println("-------------XXX----------");
 
@@ -25,14 +25,16 @@ public class Examples {
         City bangalore = new City("Bangalore","BLR",karnataka);
         City mangalore = new City("Mangalore","MLR",karnataka);
         
-        City chennai = new City("Chennai","CHN",tamil_nadu);
-        City vellore = new City("Vellore","VLR",tamil_nadu);
+        City chennai = new City("Chennai","CHN",tamilNadu);
+        City vellore = new City("Vellore","VLR",tamilNadu);
 //        mumbai.print();
 //        System.out.println("-------------XXX----------");
         
-        Country SriLanka =  new Country("Sri Lanka","Colombo","Sinhalese");
-        State NorthernProvince = new State("Northern Province","Jaffna","Tamil",SriLanka);
-        City Jaffna = new City("Jaffna", "JFN",NorthernProvince);
+        Country sriLanka =  new Country("Sri Lanka","Colombo","Sinhalese");
+        State northernProvince = new State("Northern Province","jaffna","Tamil",sriLanka);
+        City jaffna = new City("jaffna", "JFN",northernProvince);
+
+        System.out.println("The current global population is "+Person.GLOBAL_POPULATION);
         
         Person kunal = new Person("Kunal", mumbai, 200000);
         Person sachin = new Person("Sachin", thane, 200000);
@@ -45,37 +47,38 @@ public class Examples {
         Person ashwin = new Person("Ashwin", chennai, 200000);
         Person karthik = new Person("Karthik", chennai, 200000);
         Person vijay = new Person("Vijay", vellore, 200000);
-        
+
         Person dhoni = new Person("Dhoni", new City("Ranchi","RNC",new State("Jharkhand","Ranchi","Hindi",india)), 400000);
         City ranchi = dhoni.city;
         State jharkhand = dhoni.city.state;
-        
-        SriLanka.print();
-        NorthernProvince.print();
-        Jaffna.print();
+
+        System.out.println("The current global population is "+Person.GLOBAL_POPULATION);
+
+        sriLanka.print();
+        northernProvince.print();
+        jaffna.print();
         india.print();
         jharkhand.print();
         ranchi.print();
+
         dhoni.print();
-        dhoni.migrate(Jaffna);
-//        kunal.print();
-//        sachin.print();
-//        karthik.print();
+        dhoni.migrate(jaffna);
         vijay.print();
         dhoni.print();
-        SriLanka.print();
-        NorthernProvince.print();
-        Jaffna.print();
+
         india.print();
         jharkhand.print();
         ranchi.print();
-        
-        
+        sriLanka.print();
+        northernProvince.print();
+        jaffna.print();
+
+        System.out.println("The current global population is "+Person.GLOBAL_POPULATION);
 
 //        india.print();
 //        maharashtra.print();
 //        karnataka.print();
-//        tamil_nadu.print();
+//        tamilNadu.print();
 //        jharkhand.print();
 //        
 //        mumbai.print();
@@ -86,8 +89,6 @@ public class Examples {
 //        bangalore.print();
 //        mangalore.print();
 //        ranchi.print();
-//        
-//        System.out.println("-------------XXX----------");
     }
 }
 
@@ -257,6 +258,8 @@ class City extends Govt {
 
 class Person {
 
+    static int GLOBAL_POPULATION=0;
+
     String name;
     City city;
     int income;
@@ -268,6 +271,8 @@ class Person {
         this.income = income;
         this.city.birth(this);
         getIdentityNo(this.city.state.country);
+
+        GLOBAL_POPULATION++;
     }
     
     void migrate(City destinationCity) {

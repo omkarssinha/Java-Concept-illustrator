@@ -3,6 +3,8 @@ Govt and People OOPs Model
 Challenging implementations
 - Interface
 
+### CONCEPTS ###
+
 - Final
 1) Not changing values
 2) Improves speed by Creates read-only values
@@ -10,13 +12,19 @@ Challenging implementations
 Final methods cannot be define in child
 Final class cannot have chlid class
 
-- Static
-1)
+- Static variables/Attributes Use Cases
+1) Object counter: Count no of things in class across all objects
+2) Check Range of allowed attributes values: e.g. age limit, list of valid values, etc
+3) List of Global Constants:- used as Static final variables e.g. name of country, person etc.
+
+- Static functions/methods Use Cases
+1) Implement functionality with object variables: e.g System.out.println() where println is static function
 
 Structure:
 1) All OUR derived Attributes should be final
 2)
 
+### OUR USE CASE ###
 
  1) Area - abstract class
 	  |
@@ -27,7 +35,7 @@ Structure:
 
    Area - abstract class
 	  |
-   District - Class
+   District, Continent - Class
 
 2)Person - Class
 City has Person
