@@ -10,7 +10,7 @@ Challenging implementations
 2) Improves speed by Creates read-only values
 3) Child class can't modify value
 Final methods cannot be define in child
-Final class cannot have chlid class
+Final class cannot have child class
 
 - Static variables/Attributes Use Cases
 1) Object counter: Count no of things in class across all objects
@@ -65,7 +65,7 @@ Country
 Attributes
 - Name
 - Capital
-- Launguage
+- Language
 - State - Arraylist
 Calculated Derived Attributes
 - Population
@@ -79,7 +79,7 @@ State
 Attributes
 - Name
 - Capital
-- Launguage
+- Language
 - District - Arraylist
 - Country
 Calculated Derived Attributes
