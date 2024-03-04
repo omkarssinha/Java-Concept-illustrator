@@ -66,11 +66,11 @@ public class Examples {
         vijay.print();
         dhoni.print();
 
-        india.print();
-        jharkhand.print();
-        ranchi.print();
-        sriLanka.print();
-        northernProvince.print();
+//        india.print();
+//        jharkhand.print();
+//        ranchi.print();
+//        sriLanka.print();
+//        northernProvince.print();
         jaffna.print();
 
         System.out.println("The current global population is "+Person.GLOBAL_POPULATION);
@@ -97,7 +97,7 @@ abstract class Area {
     int population;
     void birth(Person person){};
     void deceased(Person person){};
-    protected void migrate(Person person, City destinationCity) {};
+    protected void migrate(Person person, Area destination) {};
 }
 
 abstract class Govt extends Area {
@@ -118,10 +118,12 @@ class Country extends Govt {
         this.capital = capital;
         this.language = language;
     }
+    @Override
     void birth(Person person)
     {
     	this.population++;
     }
+    @Override
     void deceased(Person person)
     {
     	this.population--;
@@ -141,10 +143,12 @@ class Country extends Govt {
     	assigned_uuids.add(new_uuid);
     	return new_uuid;
     }
-    protected void migrate(Person person, City destinationCity) {
+    @Override
+    protected void migrate(Person person, Area destinationCountry) {
     	
     	this.population--;
-    	destinationCity.state.country.population++;
+    	Country country = (Country) destinationCountry;
+    	country.population++;
     	person.getIdentityNo(this);
     }
     
@@ -177,24 +181,27 @@ class State extends Govt {
         
         this.country.states.add(this);
     }
-    
+    @Override
     void birth(Person person)
     {
     	this.population++;
     	this.country.birth(person);
     	
     }
+    @Override
     void deceased(Person person)
     {
     	this.population--;
     	this.country.deceased(person);
     	
     }
-    protected void migrate(Person person, City destinationCity) {
+    @Override
+    protected void migrate(Person person, Area destinationState) {
     	this.population--;
-    	destinationCity.state.population++;
-    	if(this.country != destinationCity.state.country)
-    		this.country.migrate(person, destinationCity);
+    	State state = (State) destinationState;
+    	state.population++;
+    	if(this.country != state.country)
+    		this.country.migrate(person, state.country);
     }
 
     void print() {
@@ -222,28 +229,31 @@ class City extends Govt {
         
         this.state.cities.add(this);    
     }
-    
+    @Override
     void birth(Person person)
     {
     	people.add(person);
     	this.population++;
     	this.state.birth(person);
     }
+    @Override
     void deceased(Person person)
     {
     	people.remove(person);
     	this.population--;
     	this.state.deceased(person);
     }
-    protected void migrate(Person person, City destinationCity) {
+    @Override
+    protected void migrate(Person person, Area destinationCity) {
     	
     	this.population--;
-    	destinationCity.population++;
+    	City city = (City) destinationCity;
+    	city.population++;
     	this.people.remove(person);
-    	destinationCity.people.add(person);
+    	city.people.add(person);
     	
-    	if(this.state != destinationCity.state)
-    		this.state.migrate(person, destinationCity);
+    	if(this.state != city.state)
+    		this.state.migrate(person, city.state);
     }
 
     void print() {

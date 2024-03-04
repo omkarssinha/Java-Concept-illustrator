@@ -4,7 +4,9 @@ Challenging implementations
 - Interface
 
 ### CONCEPTS ###
-
+- Access-specifier/modifier
+1) private
+2) protected
 - Final
 1) Not changing values
 2) Improves speed by Creates read-only values
