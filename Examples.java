@@ -97,7 +97,7 @@ abstract class Area {
     int population;
     void birth(Person person){};
     void deceased(Person person){};
-    void migrate(Person person, City destinationCity) {};
+    protected void migrate(Person person, City destinationCity) {};
 }
 
 abstract class Govt extends Area {
@@ -141,7 +141,7 @@ class Country extends Govt {
     	assigned_uuids.add(new_uuid);
     	return new_uuid;
     }
-    void migrate(Person person, City destinationCity) {
+    protected void migrate(Person person, City destinationCity) {
     	
     	this.population--;
     	destinationCity.state.country.population++;
@@ -190,7 +190,7 @@ class State extends Govt {
     	this.country.deceased(person);
     	
     }
-    void migrate(Person person, City destinationCity) {
+    protected void migrate(Person person, City destinationCity) {
     	this.population--;
     	destinationCity.state.population++;
     	if(this.country != destinationCity.state.country)
@@ -235,7 +235,7 @@ class City extends Govt {
     	this.population--;
     	this.state.deceased(person);
     }
-    void migrate(Person person, City destinationCity) {
+    protected void migrate(Person person, City destinationCity) {
     	
     	this.population--;
     	destinationCity.population++;
@@ -275,7 +275,7 @@ class Person {
         GLOBAL_POPULATION++;
     }
     
-    void migrate(City destinationCity) {
+     void migrate(City destinationCity) {
     	
     	if(this.city == destinationCity)
     		return;
